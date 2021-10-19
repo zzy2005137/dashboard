@@ -1,8 +1,9 @@
 <template>
   <div class="wrap">
-    <div id="myChart" :style="{ width: '80%', height: '300px' }"></div>
-    <!-- <el-button @click="showProps">check</el-button>
-    <el-button @click="updateChart">update</el-button> -->
+    <div id="myChart" :style="{ width: '100%', height: '300px' }"></div>
+    <el-button @click="handleCheck">check</el-button>
+    <el-button @click="handleOne">One</el-button>
+    <!-- <el-button @click="updateChart">update</el-button> -->
   </div>
 </template>
 
@@ -25,7 +26,7 @@ import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from "echarts/renderers";
 
-// 注册必须的组件
+// 注册必须的组件npm
 echarts.use([
   TitleComponent,
   TooltipComponent,
@@ -39,7 +40,7 @@ echarts.use([
 ]);
 
 export default {
-  props: ["tableData", "test"],
+  props: ["tableActual", "tablePlan", "currentRow"],
   name: "chart",
   data() {
     return {
@@ -48,18 +49,38 @@ export default {
     };
   },
   methods: {
-    showProps() {
-      console.log(this.tableData);
-      // this.value += 5
+    handleCheck() {
+      // this.chartInstance.setOption(this.option);
+    },
+    handleOne() {
+      let ms = [];
+      let e = this.currentRow;
+      ms.push((e.M1 / e.Mi) * 100);
+      ms.push(Math.round((e.M2 / e.Mi) * 100));
+      ms.push(Math.round((e.M3 / e.Mi) * 100));
+      ms.push(Math.round((e.M4 / e.Mi) * 100));
+      ms.push(Math.round((e.M5 / e.Mi) * 100));
+      ms.push(Math.round((e.M6 / e.Mi) * 100));
+      console.log(ms);
+
+      return ms;
+    },
+    getTimeSpan(date1, date2) {
+      //date1:小日期   date2:大日期
+      var sdate = new Date(date1);
+      var now = new Date(date2);
+      var days = now.getTime() - sdate.getTime();
+      var day = parseInt(days / (1000 * 60 * 60 * 24));
+      return day + 1;
     },
     updateChart() {}
   },
   watch: {
-    tableData: {
+    currentRow: {
       deep: true,
       handler() {
         // this.chartInstance.setOption(this.option)
-        console.log("tableData changed");
+        console.log("currentRow changed === from bar.vue");
         // this.showProps()
         this.chartInstance.setOption(this.option);
       }
@@ -76,13 +97,7 @@ export default {
   },
   computed: {
     option() {
-      let data = this.tableData.map(e => {
-        return e.name;
-      });
-
-      let value = this.tableData.map(e => {
-        return Number(e.quantity);
-      });
+      let data = this.handleOne();
 
       let option = {
         title: {
@@ -90,14 +105,29 @@ export default {
         },
         tooltip: {},
         xAxis: {
-          data: data
+          data: ["P1", "P2", "P3", "P4", "P5", "P6"],
+          axisTick: {
+            alignWithLabel: true
+          }
         },
-        yAxis: {},
+        yAxis: {
+          type: "value",
+          max: 100,
+
+          axisLabel: {
+            formatter: "{value} %"
+          }
+        },
         series: [
           {
-            name: "销量",
+            name: "完成进度",
             type: "bar",
-            data: value
+            data: data,
+            showBackground: true,
+            backgroundStyle: {
+              color: "rgba(180, 180, 180, 0.2)"
+            },
+            barWidth: "60%"
           }
         ]
       };
