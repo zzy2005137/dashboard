@@ -118,6 +118,10 @@ export default {
           {
             prop: "M6",
             label: "M6"
+          },
+          {
+            prop: "d",
+            label: "d"
           }
         ],
         tableData: [
@@ -138,6 +142,7 @@ export default {
             T4: 1,
             T5: 0.5,
             T6: null,
+            d: 9,
             edit: false
           },
           {
@@ -157,7 +162,7 @@ export default {
             T4: null,
             T5: null,
             T6: null,
-
+            d: 8,
             edit: false
           },
           {
@@ -177,6 +182,7 @@ export default {
             T4: 1.75,
             T5: 1,
             T6: null,
+            d: 7,
             edit: false
           },
           {
@@ -196,6 +202,7 @@ export default {
             T4: 0,
             T5: 0,
             T6: 0,
+            d: 3,
             edit: false
           },
           {
@@ -215,6 +222,7 @@ export default {
             T4: 1.75,
             T5: null,
             T6: null,
+            d: 5,
             edit: false
           }
         ]

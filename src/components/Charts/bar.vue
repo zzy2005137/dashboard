@@ -1,8 +1,8 @@
 <template>
   <div class="wrap">
-    <div id="myChart" :style="{ width: '100%', height: '300px' }"></div>
-    <el-button @click="handleCheck">check</el-button>
-    <el-button @click="handleOne">One</el-button>
+    <div id="myChart" :style="{ width: '100%', height: '350px' }"></div>
+    <!-- <el-button @click="handleCheck">check</el-button>
+    <el-button @click="handleOne">One</el-button> -->
     <!-- <el-button @click="updateChart">update</el-button> -->
   </div>
 </template>
@@ -65,14 +65,6 @@ export default {
 
       return ms;
     },
-    getTimeSpan(date1, date2) {
-      //date1:小日期   date2:大日期
-      var sdate = new Date(date1);
-      var now = new Date(date2);
-      var days = now.getTime() - sdate.getTime();
-      var day = parseInt(days / (1000 * 60 * 60 * 24));
-      return day + 1;
-    },
     updateChart() {}
   },
   watch: {
@@ -101,7 +93,7 @@ export default {
 
       let option = {
         title: {
-          text: "ECharts 示例"
+          text: "关键工序点完成度"
         },
         tooltip: {},
         xAxis: {
